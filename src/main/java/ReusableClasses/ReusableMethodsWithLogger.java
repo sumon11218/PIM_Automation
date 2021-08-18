@@ -23,8 +23,9 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class ReusableMethodsWithLogger extends AbstractReusableClass{
-    //static variable for explicit timeout
+    //static variable for explicit wait timeout
     static int timeout = 8;
+
     public static void logInfo(ExtentTest logger, String message){
         logger.info(MarkupHelper.createLabel(message, ExtentColor.GREY));
     }//end of logInfo

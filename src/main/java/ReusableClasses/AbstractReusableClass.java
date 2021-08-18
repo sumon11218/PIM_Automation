@@ -15,6 +15,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Map;
 
 
@@ -31,12 +35,24 @@ public class AbstractReusableClass{
     public static String directoryFolder = null;
     public static String runTimeEnv = "";
 
+    /** database connection variables **/
+    // Connection object
+    static Connection con = null;
+    // Statement object
+    public static Statement stmt;
+    // Constant for Database URL
+    public static String DB_URL = "jdbc:mysql://localhost:3306/user";
+    // Constant for Database Username
+    public static String DB_USER = "root";
+    // Constant for Database Password
+    public static String DB_PASSWORD = "root";
+
     /**
-     BeforeSuite will set the environment you are running your automation on and
-     as well as the sandbox you are executing on
+     BeforeSuite will set the driver and report for your automation and
+     as well as set up the database connection
     **/
     @BeforeSuite
-    public void defineDriver() throws IOException, InterruptedException, ParseException {
+    public void defineDriver() throws IOException, InterruptedException, ParseException, ClassNotFoundException, IllegalAccessException, InstantiationException, SQLException {
         Thread.sleep(900);
         String path = "";
         path = "C:/Users/ksmsu/Downloads/HTML/HTML_Automation_Report_"+ ReusableClasses.ReusableMethodsWithLogger.getDateTime() + ".html";
@@ -49,9 +65,22 @@ public class AbstractReusableClass{
         htmlReporter.config().setTheme(Theme.DARK);
         //set the driver
         driver = ReusableClasses.ReusableMethodsWithLogger.setDriver();
+
+        //database setup
+       try{
+            // Make the database connection
+            String dbClass = "com.mysql.jdbc.Driver";
+            Class.forName(dbClass).newInstance();
+            // Get connection to DB
+            Connection con = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            // Statement object to send the SQL statement to the Database
+            stmt = con.createStatement();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }//end of before suite
 
-    //BeforeMethod will kickoff a new instance of chrome driver right before executing @Test
+    //Before is not needed at the moment
     @BeforeMethod
     public void getMethodName() throws IOException, InterruptedException {
         //start the chrome driver
@@ -66,12 +95,16 @@ public class AbstractReusableClass{
     }//end of after method
 
     /**
-      AfterSuite will quit the current driver/session but don't need this at the moment
-      since we are using Runtime.exec on setDriver method to kill all instances
-     that were opened previously via automation
+      AfterSuite will close the DB connection
      **/
     @AfterSuite
-    public void quitSession(){
+    public void quitSession() throws SQLException {
+        //don't need driver.quit at the moment since runtime.exec is used to kill chrome driver
         //driver.quit();
+
+        // Close DB connection
+        if (con != null) {
+            con.close();
+        }
     }//end of after suite
 }//end of java class
