@@ -9,16 +9,5 @@ public class BaseClass extends AbstractReusableClass {
         PageFactory.initElements(driver,this);
     }//end of constructor class
 
-    //object for home page
-    public static HomePage homePage(){
-        HomePage homePage = new HomePage(driver);
-        return homePage;
-    }//end of of home page object
-
-    //object for results page
-    public static ResultsPage resultsPage(){
-        ResultsPage resultsPage = new ResultsPage(driver);
-        return resultsPage;
-    }//end of of results page object
 
 }//end of class
