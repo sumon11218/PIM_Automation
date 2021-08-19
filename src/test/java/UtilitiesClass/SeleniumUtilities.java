@@ -1,4 +1,4 @@
-package ReusableClasses;
+package UtilitiesClass;
 
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.MediaEntityBuilder;
@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class ReusableMethodsWithLogger extends AbstractReusableClass{
+public class SeleniumUtilities extends TestNGUtilites {
     //static variable for explicit wait timeout
     static int timeout = 8;
 
@@ -54,7 +54,7 @@ public class ReusableMethodsWithLogger extends AbstractReusableClass{
             HashMap<String, Object> chromePreferences = new HashMap<String, Object>();
             chromePreferences.put("profile.default_content_settings.popups", 0);
             chromePreferences.put("download.prompt_for_download", "false");
-            chromePreferences.put("download.default_directory", AbstractReusableClass.directoryFolder);
+            chromePreferences.put("download.default_directory", TestNGUtilites.directoryFolder);
             ChromeOptions chromeOptions = new ChromeOptions();
             chromeOptions.setUnhandledPromptBehaviour(UnexpectedAlertBehaviour.ACCEPT_AND_NOTIFY);
             //chromeOptions.addArguments("headless");
@@ -206,24 +206,13 @@ public class ReusableMethodsWithLogger extends AbstractReusableClass{
     //verify expected with actual
     public static void verifyMessage(String expected, String actual, String elementName, ExtentTest logger){
         if(expected.contains(actual)){
-            ReusableClasses.ReusableMethodsWithLogger.logPass(logger, "For " + elementName + " Expected matches with actual: " + expected);
+            SeleniumUtilities.logPass(logger, "For " + elementName + " Expected matches with actual: " + expected);
             printStatementPass("Verification", "verifyMessage", expected + " for " + elementName,"Expected matches with actual: ");
         } else {
-            ReusableClasses.ReusableMethodsWithLogger.logFail(logger, "For " + elementName + " Expected: " + expected + " and Actual: " + actual);
+            SeleniumUtilities.logFail(logger, "For " + elementName + " Expected: " + expected + " and Actual: " + actual);
             printStatementForFailVerification("verifyMessage", expected, elementName, actual);
         }
     }//end of verifyMessage
-
-    //verify expected with actual
-    public static void verifyMessageEqualsto(String expected, String actual, String elementName, ExtentTest logger){
-        if(expected.equals(actual)){
-            ReusableClasses.ReusableMethodsWithLogger.logPass(logger, "For " + elementName + " Expected matches with actual: " + expected);
-            printStatementPass("Verification", "verifyMessageEqualsto", expected + " for " + elementName,"Expected matches with actual: ");
-        } else {
-            ReusableClasses.ReusableMethodsWithLogger.logFail(logger, "For " + elementName + " Expected: " + expected + " and Actual: " + actual);
-            printStatementForFailVerification("verifyMessageEqualsto", expected, elementName, actual);
-        }
-    }//end of verifyMessageEqualsto
 
     //method to select a value from a dropdown
     public static void dropDownByVisisbleText(WebDriver driver, WebElement locator, String dropDownValue, String elementName, ExtentTest logger){
@@ -255,22 +244,6 @@ public class ReusableMethodsWithLogger extends AbstractReusableClass{
             getScreenShot(driver,logger,elementName);
         }
     }//end of sendkeys method
-
-    //method to enter user input on send keys
-    public static void enterUserCredentialsForLogin(WebDriver driver, WebElement locator, String userInput, String elementName, ExtentTest logger){
-        try{
-            printStatementInfo("Input", "enterUserCredentialsForLogin",userInput, elementName);
-            WebElement element = setExplictWaitForElement(driver,locator);
-            Thread.sleep(900);
-            element.sendKeys(Keys.chord(Keys.CONTROL, "a"));
-            element.sendKeys(userInput);
-            logPass(logger,"Successfully entered a user value on " + elementName);
-        } catch (Exception e) {
-            printStatementFail("Input", "enterUserCredentialsForLogin", userInput, elementName, e);
-            logFail(logger,"Method userKeys: Unable to enter a user value on " + elementName);
-            getScreenShot(driver,logger,elementName);
-        }
-    }//end of enterUserCredentialsForLogin method
 
     //method to enter user input on send keys
     public static void userTypeAndHitEnter(WebDriver driver, WebElement locator, String userInput, String elementName, ExtentTest logger){
@@ -381,19 +354,6 @@ public class ReusableMethodsWithLogger extends AbstractReusableClass{
         }
     }//end of click by js method
 
-    public static void clickForGuests(WebDriver driver, WebElement locator, int numbOfGuest, String elementName, ExtentTest logger) throws InterruptedException {
-        try{
-            printStatementInfo("Click","clickForGuests", "", elementName);
-            WebElement element = setExplictWaitForElement(driver,locator);
-            element.click();
-            logPass(logger,"Successfully selected " + numbOfGuest + " " + elementName);
-        } catch (Exception e) {
-            printStatementFail("Click", "clickForGuests", "", elementName, e);
-            logFail(logger,"Method clickForGuests: Unable to click on " + elementName);
-            getScreenShot(driver,logger,elementName);
-        }
-    }//end of click by js method
-
     public static void typeUsingJs(WebDriver driver, WebElement locator, String elementName, String userInput,ExtentTest logger) throws InterruptedException {
         JavascriptExecutor js = (JavascriptExecutor)driver;
         Thread.sleep(1500);
@@ -410,31 +370,12 @@ public class ReusableMethodsWithLogger extends AbstractReusableClass{
         }
     }//end of click by js method
 
-
     //method to return text from an element
     public static String captureText(WebDriver driver, WebElement locator, String elementName, ExtentTest logger) throws InterruptedException {
         String result = null;
         try{
             printStatementInfo("Text", "captureText", "", elementName);
             WebElement element = setExplictWaitForElement(driver,locator);
-            result = element.getText();
-            printStatementPass("Verification","captureText","Successfully captured a text " + result, elementName);
-            logPass(logger,"Successfully captured a text " + result + " from " + elementName);
-        } catch (Exception e) {
-            printStatementFail("Text", "captureText", "", elementName, e);
-            logFail(logger,"Method captureText: Unable to capture text from " + elementName);
-            getScreenShot(driver,logger,elementName);
-        }
-        return result;
-    }//end of captureText method
-
-    //method to return text from an element
-    public static String captureByXpathString(WebDriver driver, String locator, String elementName, ExtentTest logger) throws InterruptedException {
-        String result = null;
-        WebDriverWait wait = new WebDriverWait(driver,timeout);
-        try{
-            printStatementInfo("Text", "captureText", "", elementName);
-            WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(locator)));
             result = element.getText();
             printStatementPass("Verification","captureText","Successfully captured a text " + result, elementName);
             logPass(logger,"Successfully captured a text " + result + " from " + elementName);
@@ -494,55 +435,19 @@ public class ReusableMethodsWithLogger extends AbstractReusableClass{
             String os = System.getProperty("os.name").toLowerCase();
             String directory = null;
             String snPath = null;
-            if (os.contains("win")) {
-                directory = System.getProperty("user.home")+"//Downloads//HTML//Screenshots//";
-                snPath = "Screenshots//";
-            } else {
-                directory = "HTML_Reports/Screenshots/";
-                snPath = "Screenshots/";
-            }
+            directory = System.getProperty("user.home") + "//Downloads//HTML//Screenshots//";
+            snPath = "Screenshots//";
             File sourceFile = ((TakesScreenshot) wDriver).getScreenshotAs(OutputType.FILE);
             FileUtils.copyFile(sourceFile, new File(directory + fileName));
             //String imgPath = directory + fileName;
             String image = snPath + fileName;
-            logger.info("Screenshot",MediaEntityBuilder.createScreenCaptureFromPath(image).build());
+            logger.info("Screenshot", MediaEntityBuilder.createScreenCaptureFromPath(image).build());
         } catch (Exception e) {
             logFail(logger, "Error Occured while taking SCREENSHOT!!!");
             e.printStackTrace();
         }
-    }//end of screenshot method
 
-    public static String getDateInFormat(int days){
-        SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy");
-        Calendar c = Calendar.getInstance();
-        //Number of Days to add
-        c.add(Calendar.DAY_OF_MONTH, days);
-        //Date after adding the days to the given date
-        String newDate = sdf.format(c.getTime());
-        return newDate;
-    }//end of get date
-
-    public static String getDateInFormatCalendar(int days){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Calendar c = Calendar.getInstance();
-        //Number of Days to add
-        c.add(Calendar.DAY_OF_MONTH, days);
-        //Date after adding the days to the given date
-        String newDate = sdf.format(c.getTime());
-        return newDate;
-    }//end of get date
-
-    //method below will generate random unique id
-    public static String generateID(int num) {
-        Random rnd = new Random();
-        char [] digits = new char[num];
-        digits[0] = (char) (rnd.nextInt(9) + '1');
-        for(int i=1; i<digits.length; i++) {
-            digits[i] = (char) (rnd.nextInt(10) + '0');
-        }
-        Long val = Long.parseLong(new String(digits));
-        return val.toString();
-    }//end of get up to 19 digits id
+    }//end of getScreenShotRegular
 
     //switch to a window
     public static void switchTo(int index, WebDriver wDriver) {
@@ -553,34 +458,5 @@ public class ReusableMethodsWithLogger extends AbstractReusableClass{
             Reporter.log("Invalid Window Index : " + index, true);
         }
     }//end of switch to method
-
-    public static String getDateTime() {
-        SimpleDateFormat sdfDateTime;
-        String strDateTime;
-        sdfDateTime = new SimpleDateFormat("yyyyMMdd'_'HHmmss'_'SSS");
-        Date now = new Date();
-        strDateTime = sdfDateTime.format(now);
-        return strDateTime;
-    }
-
-    //method below allow you to remove leading zeros from string numbers
-    public static String removeZero(String str)
-    {
-        // Count leading zeros
-        int i = 0;
-        while (i < str.length() && str.charAt(i) == '0')
-            i++;
-
-        // Convert str into StringBuffer as Strings
-        // are immutable.
-        StringBuffer sb = new StringBuffer(str);
-
-        // The  StringBuffer replace function removes
-        // i characters from given index (0 here)
-        sb.replace(0, i, "");
-
-        return sb.toString();  // return in String
-    }//end of removeZero method
-
 
 }//end of java class
