@@ -56,14 +56,12 @@ public class TestNGUtilites {
         //set the driver
         driver = SeleniumUtilities.setDriver();
         //database setup
-        DatabaseUtilities.dbSetup(getPropValue("db_url"), getPropValue("db_user"), getPropValue("db_password"));
+        //DatabaseUtilities.dbSetup(getPropValue("db_url"), getPropValue("db_user"), getPropValue("db_password"));
     }//end of before suite
 
     //Before is not needed at the moment
     @BeforeMethod
     public void getMethodName() throws IOException, InterruptedException {
-        //start the chrome driver
-        //driver = ReusableClasses.ReusableMethodsWithLogger.setDriver();
     }//end of before method
 
 
