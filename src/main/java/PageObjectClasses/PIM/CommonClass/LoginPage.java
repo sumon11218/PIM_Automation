@@ -28,11 +28,11 @@ ExtentTest logger;
     @FindBy(xpath = "//*[@id='login-button']")
     WebElement loginButton;
 
-    public void login() throws IOException, InterruptedException {
+    public void login(String username, String password) throws IOException, InterruptedException {
         driver.navigate().to(getPropValue("pim_url"));
         Thread.sleep(2500);
-        SeleniumUtilities.userKeys(driver,usernameField,getPropValue("pim_username"),"Username",logger);
-        SeleniumUtilities.userKeys(driver,passwordField,getPropValue("pim_password"),"Password",logger);
+        SeleniumUtilities.userKeys(driver,usernameField,username,"Username",logger);
+        SeleniumUtilities.userKeys(driver,passwordField,password,"Password",logger);
         SeleniumUtilities.click(driver,loginButton,"Login Button",logger);
     }//end of login
 
