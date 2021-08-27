@@ -12,6 +12,7 @@ import static UtilitiesClass.JavaUtilities.getPropValue;
 
 public class test extends TestNGUtilites{
 
+    //test
     @Test
     public void Choos() throws IOException, InterruptedException {
         logger = reports.createTest("Selecting Dental for US Catalog");
