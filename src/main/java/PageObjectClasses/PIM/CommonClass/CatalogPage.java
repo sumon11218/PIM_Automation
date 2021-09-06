@@ -22,9 +22,14 @@ public class CatalogPage extends TestNGUtilites{
         this.logger = TestNGUtilites.node;
     }//end of constructor class
 
+
     //locators
     @FindBy(xpath = "//span[@class='v-nativebutton-caption' and text()='Catalogs']")
     WebElement catalogsTab;
+
+    @FindBy(xpath = "//span[@class='v-nativebutton-caption' and text()='Catalogs']")
+        WebElement catalogsTab1;
+
     @FindBy(xpath = "//*[@class='v-treetable-treespacer']")
     List<WebElement> catalogsList;
 
